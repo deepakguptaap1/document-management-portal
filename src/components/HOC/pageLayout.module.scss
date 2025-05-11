@@ -1,3 +1,4 @@
+@use "@/styles/variable.scss" as *;
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -5,5 +6,8 @@
   .mainSection {
     margin: 100px 40px 40px 40px;
     min-height: calc(100vh - 337px) !important;
+    @include mobile {
+      margin: 80px 16px 16px 16px;
+    }
   }
 }

@@ -52,3 +52,19 @@ export interface CustomIframeProps {
   className?: string;
   allowFullScreen?: boolean;
 }
+
+export interface CustomDropdownProps {
+  options: User["role"][];
+  value: string;
+  onChange: (value: User["role"]) => void;
+  placeholder?: string;
+  label?: string;
+}
+
+export interface CustomLinkProps {
+  href: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  text?: string;
+}
