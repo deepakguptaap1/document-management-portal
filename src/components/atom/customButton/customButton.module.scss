@@ -1,0 +1,82 @@
+.button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Variants */
+.primary {
+  background-color: #0070f3;
+  color: white;
+  &:hover {
+    background-color: #005ac1;
+  }
+}
+.primary-medium {
+  background-color: #0070f3;
+  color: white;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  &:hover {
+    background-color: #005ac1;
+  }
+}
+
+.secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  &:hover {
+    background-color: #cfcfcf;
+  }
+}
+.secondary-medium {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  &:hover {
+    background-color: #cfcfcf;
+  }
+}
+
+.danger {
+  background-color: #e53935;
+  color: white;
+  &:hover {
+    background-color: #c62828;
+  }
+}
+.danger-medium {
+  background-color: #e53935;
+  color: white;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  &:hover {
+    background-color: #c62828;
+  }
+}
+
+.success {
+  background: #2ecc71;
+  color: white;
+  &:hover {
+    background-color: #219150;
+  }
+}
+.success-medium {
+  background: #2ecc71;
+  color: white;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  &:hover {
+    background-color: #219150;
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}

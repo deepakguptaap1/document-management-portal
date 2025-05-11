@@ -1,0 +1,15 @@
+.uploader {
+  margin-bottom: 1rem;
+  .fileUploadSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+  }
+  .uploadBtn {
+    height: fit-content;
+  }
+}
