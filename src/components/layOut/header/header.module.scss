@@ -8,6 +8,9 @@
   width: 100%;
   z-index: 998;
   padding: 1rem 2rem;
+  @include mobile {
+    padding: 1rem;
+  }
 }
 
 .container {
@@ -23,14 +26,20 @@
   text-decoration: none;
 }
 
+.headerLogo {
+  color: #fff;
+  &:hover {
+    color: #fff;
+  }
+}
 .menuToggle {
   display: none;
   background: none;
   border: none;
-  font-size: 1.8rem;
+  font-size: 1.8rem !important;
   color: #fff;
   cursor: pointer;
-
+  padding: 0 !important;
   @include mobile {
     display: block;
   }

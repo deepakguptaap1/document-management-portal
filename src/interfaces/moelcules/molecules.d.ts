@@ -32,3 +32,8 @@ export interface SeoProps {
   title?: string;
   description?: string;
 }
+
+export interface ClickAwayListenerProps {
+  children: React.ReactNode;
+  onClickAway: () => void;
+}
