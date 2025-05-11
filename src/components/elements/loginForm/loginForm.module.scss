@@ -1,0 +1,31 @@
+.form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.button {
+  padding: 0.8rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #005ac1;
+}

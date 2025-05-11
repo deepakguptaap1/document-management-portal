@@ -1,0 +1,56 @@
+@use "@/styles/variable.scss" as *;
+.heading {
+  text-align: center;
+}
+
+.documentManager {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fafafa;
+
+  .uploadNewDocBtn {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .docListHeading {
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
+  .uploadSection {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .documentList {
+    list-style: none;
+    padding: 0;
+
+    li {
+      background: #fff;
+      border: 1px solid #ddd;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .actions {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        @include mobile {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
