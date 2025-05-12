@@ -10,4 +10,14 @@ export const initialStore = {
     email: "",
     password: "",
   },
+  usersData: [],
+  isAuthenticated: false,
+  role: "",
+  currentUser: {
+    fullName: "",
+    email: "",
+    mobile: "",
+    role: "",
+    id: "",
+  },
 };

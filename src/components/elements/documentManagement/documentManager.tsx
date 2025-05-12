@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./documentManager.module.scss";
 import DocumentViewer from "@/components/molecules/documentViewer/documentViewer";
 import CustomButton from "@/components/atom/customButton/cutomButton";
 import DocumentUploader from "@/components/molecules/documentUploader/documentUploader";
 import { UploadedDocument } from "@/interfaces/moelcules/molecules";
+import { useAppContext } from "@/store/store";
 
 const DocumentManager = () => {
-  const [documents, setDocuments] = useState<UploadedDocument[]>([]);
+  const { getStore, updateStore } = useAppContext();
+  const { currentUser } = getStore();
+  const documents = currentUser?.files ?? [];
   const [selectedDoc, setSelectedDoc] = useState<UploadedDocument | null>(null);
   const [isUpload, setIsUpload] = useState<boolean>(false);
 
-  const handleUpload = (files: File[]) => {
+  useEffect(() => {
+    const fetchDocumnets = async () => {
+      console.log(`/api/documents?id=${currentUser.id}`);
+      try {
+        const res = await fetch(
+          `/api/documents?id=${encodeURIComponent(currentUser.id)}`
+        );
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message);
+        updateStore({ currentUser: result.data });
+      } catch (err) {
+        console.error("Document fetch failed", err);
+      }
+    };
+    if (!currentUser?.files?.length) fetchDocumnets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleUpload = async (files: File[]) => {
     const newDocs: UploadedDocument[] = files.map((file) => ({
       name: file.name,
       size: file.size,
@@ -18,12 +39,46 @@ const DocumentManager = () => {
       uploadedAt: new Date().toLocaleString(),
       file,
     }));
-    setDocuments((prev) => [...prev, ...newDocs]);
-    handleUploadDialog();
+
+    try {
+      const res = await fetch("/api/documents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: currentUser.id,
+          files: [...documents, ...newDocs],
+        }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message);
+      updateStore({
+        currentUser: result.data,
+      });
+      handleUploadDialog();
+    } catch (err) {
+      console.error("Document Upload failed", err);
+    }
   };
 
-  const removeDocument = (index: number) => {
-    setDocuments((prev) => prev.filter((_, i) => i !== index));
+  const removeDocument = async (index: number) => {
+    const files = documents.filter((_, i) => i !== index);
+    try {
+      const res = await fetch("/api/documents", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: currentUser.id,
+          files: files,
+        }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message);
+      updateStore({
+        currentUser: result.data,
+      });
+    } catch (err) {
+      console.error("Document Delete failed", err);
+    }
   };
 
   const downloadDocument = (doc: UploadedDocument) => {
@@ -52,13 +107,13 @@ const DocumentManager = () => {
             Upload Documents
           </CustomButton>
         </div>
-        {documents.length === 0 ? (
+        {documents?.length === 0 ? (
           <p>No documents uploaded.</p>
         ) : (
           <>
             <h3 className={styles.docListHeading}>All Uploaded Document</h3>
             <ul className={styles.documentList}>
-              {documents.map((doc, index) => (
+              {documents?.map((doc, index) => (
                 <li key={index}>
                   <div>
                     <strong>{doc.name}</strong> ({(doc.size / 1024).toFixed(2)}{" "}

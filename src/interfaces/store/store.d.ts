@@ -1,8 +1,13 @@
+import { UsersDataProps } from "@/backend/interface";
 import { LoginFormDataProps, SignUpFormDataProps } from "./elements";
 
 export interface storeProps {
   signupData: SignUpFormDataProps;
   loginData: LoginFormDataProps;
+  isAuthenticated: boolean;
+  usersData: UsersDataProps[];
+  role: string;
+  currentUser: UsersDataProps;
 }
 
 export interface AppContextProps {
@@ -11,5 +16,10 @@ export interface AppContextProps {
 }
 
 export interface UpdateContextPayloadProps {
-  [key: keyof storeProps]: SignUpFormDataProps | LoginFormDataProps;
+  [key: keyof storeProps]:
+    | SignUpFormDataProps
+    | LoginFormDataProps
+    | UsersDataProps[]
+    | UsersDataProps
+    | boolean;
 }

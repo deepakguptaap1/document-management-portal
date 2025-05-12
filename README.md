@@ -1,40 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+```markdown
+# 📁 Document Management Portal
 
-## Getting Started
+A modern, client-rendered (CSR) document management system built with **Next.js**, **TypeScript**, and **SCSS Modules**. This portal allows users to manage, view, and update documents through a scalable and modular interface.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 📄 Upload and preview documents
+- 👥 User login, registration, and role-based access
+- 🧩 Component-driven UI (Atomic Design)
+- 📱 Responsive design for desktop and mobile
+- 🧠 SCSS with media queries and mixins
+- 📦 Modular architecture with path aliasing
+
+---
+
+## 🧱 Folder Structure
+```
+
+src/
+├── components/
+│ ├── atom/
+│ ├── elements/
+│ ├── molecules/
+│ ├── HOC/
+│ └── layOut/
+├── constant/
+├── interfaces/
+├── pages/
+│ ├── api/
+│ ├── documents/
+│ ├── login/
+│ ├── register/
+│ └── user/
+│ ├── \_app.tsx
+│ ├── \_document.tsx
+│ └── index.tsx
+├── store/
+├── styles/
+├── utils/
+
+````
+
+---
+
+## 🛠️ Technologies Used
+
+- **Next.js** `15.3.2`
+- **React** `19`
+- **TypeScript** `5`
+- **SCSS Modules** (`sass`)
+- **clsx** for conditional classes
+- **ESLint** for code quality
+
+---
+
+## 🧭 Aliases (from `tsconfig.json`)
+
+```json
+"paths": {
+  "@/*": ["./src/*"],
+  "@interfaces/*": ["./interfaces/*"],
+  "@styles/*": ["./styles/*"],
+  "@constant/*": ["./constant/*"],
+  "@components/*": ["./components/*"]
+}
+````
+
+---
+
+## 📦 Installation & Development
+
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/your-username/document-management-portal.git
+cd document-management-portal
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+```
+
+3. **Run the development server:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 🔧 Scripts
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+| Command         | Purpose                  |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Create production build  |
+| `npm start`     | Run built application    |
+| `npm run lint`  | Run ESLint checks        |
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📋 Linting & Code Style
 
-To learn more about Next.js, take a look at the following resources:
+- ESLint: `eslint-config-next`
+- SCSS modules for scoped styles
+- Uses `@use` instead of deprecated `@import` in Sass
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚙️ Notes
 
-## Deploy on Vercel
+- Mobile and desktop responsive layouts supported
+- No server-side rendering (CSR-only by design)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```
