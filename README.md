@@ -1,14 +1,38 @@
 ```markdown
 # 📁 Document Management Portal
 
-A modern, client-rendered (CSR) document management system built with **Next.js**, **TypeScript**, and **SCSS Modules**. This portal allows users to manage, view, and update documents through a scalable and modular interface.
+A modern, client-rendered (CSR) document management system built with **Next.js**, **TypeScript**, and **SCSS Modules**.
+This portal allows users to manage, view, and update documents through a scalable and modular interface.
 
 ---
 
 ## 🚀 Features
 
-- 📄 Upload and preview documents
-- 👥 User login, registration, and role-based access
+### UI Level
+#### 🔐 Authentication
+
+* **Signup**: Users can register by providing full name, email, mobile number, password, and confirm password.
+* **Login**: Users can log in using email and password.
+* **Logout**: Can be implemented by clearing session data and redirecting (not yet implemented).
+
+---
+
+#### 👤 User Capabilities
+
+* **Upload Documents**: Users can upload up to 5 files (PDF or images only).
+* **View Documents**: Uploaded documents are listed for the user.
+* **Download Documents**: Files can be downloaded from the dashboard.
+* **Delete Documents**: Users can delete their own uploaded files.
+
+---
+
+#### 🧑‍💼 Admin Capabilities
+
+* **View All Users**: Admin can view a list of all registered users.
+* **Change User Role**: Admin can modify user roles (user, manager, admin).
+* **Delete Users**: Admin can delete any user profile.
+
+### Code Level
 - 🧩 Component-driven UI (Atomic Design)
 - 📱 Responsive design for desktop and mobile
 - 🧠 SCSS with media queries and mixins
@@ -16,8 +40,17 @@ A modern, client-rendered (CSR) document management system built with **Next.js*
 
 ---
 
+## 🚧 Planned Enhancements
+
+* Add JWT-based or session-based authentication system.
+* Implement password hashing using `bcrypt`.
+* Store auth token using `LocalStorage` or `HttpOnly` cookies.
+* Add role-based access protection on routes and APIs.
+* Persist user data in a database (currently in-memory or mocked).
+
+---
+
 ## 🧱 Folder Structure
-```
 
 src/
 ├── components/
@@ -41,7 +74,6 @@ src/
 ├── styles/
 ├── utils/
 
-````
 
 ---
 
@@ -58,7 +90,7 @@ src/
 
 ## 🧭 Aliases (from `tsconfig.json`)
 
-```json
+json
 "paths": {
   "@/*": ["./src/*"],
   "@interfaces/*": ["./interfaces/*"],
@@ -66,7 +98,7 @@ src/
   "@constant/*": ["./constant/*"],
   "@components/*": ["./components/*"]
 }
-````
+`
 
 ---
 
@@ -74,22 +106,22 @@ src/
 
 1. **Clone the repository:**
 
-```bash
+bash
 git clone https://github.com/your-username/document-management-portal.git
 cd document-management-portal
-```
+
 
 2. **Install dependencies:**
 
-```bash
+bash
 npm install
-```
+
 
 3. **Run the development server:**
 
-```bash
+bash
 npm run dev
-```
+
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -118,7 +150,4 @@ npm run dev
 
 - Mobile and desktop responsive layouts supported
 - No server-side rendering (CSR-only by design)
-
-```
-
 ```
