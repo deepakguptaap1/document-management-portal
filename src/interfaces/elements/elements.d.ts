@@ -3,7 +3,7 @@ export interface SignUpFormDataProps {
   email: string;
   mobile: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }
 
 export interface LoginFormDataProps {
@@ -13,7 +13,7 @@ export interface LoginFormDataProps {
 
 export interface User {
   id: string;
-  name: string;
+  fullName: string;
   email: string;
   role: "Admin" | "User" | "Manager";
 }

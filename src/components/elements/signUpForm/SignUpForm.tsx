@@ -4,8 +4,10 @@ import CustomButton from "@/components/atom/customButton/cutomButton";
 import CustomInput from "@/components/atom/customInput/customInput";
 import { SignUpFormDataProps } from "@/interfaces/elements/elements";
 import { useAppContext } from "@/store/store";
+import { useRouter } from "next/router";
 
 const SignUpForm: React.FC = () => {
+  const router = useRouter();
   const { updateStore } = useAppContext();
 
   const [signupFormData, setSignupFormData] = useState<SignUpFormDataProps>({
@@ -32,7 +34,7 @@ const SignUpForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { fullName, email, mobile, password, confirmPassword } =
       signupFormData;
 
@@ -56,9 +58,34 @@ const SignUpForm: React.FC = () => {
       return;
     }
 
-    console.log("Form submitted:", signupFormData);
-    updateStore({ signupData: signupFormData });
-    // TODO: Call signup API here
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payload: signupFormData }),
+      });
+      const result = await res.json();
+      console.log(result);
+      if (!res.ok) throw new Error(result.message);
+      const payLoad = { ...signupFormData };
+      delete payLoad.confirmPassword;
+      updateStore({
+        signupData: payLoad,
+        isAuthenticated: true,
+        currentUser: result.data,
+      });
+      setSignupFormData({
+        fullName: "",
+        email: "",
+        mobile: "",
+        password: "",
+        confirmPassword: "",
+      });
+      //session management and Implement  authentication feature
+      router.push("/documents");
+    } catch (err) {
+      console.error("Registration failed", err);
+    }
   };
 
   return (
@@ -80,7 +107,7 @@ const SignUpForm: React.FC = () => {
         label="Email"
         name="email"
         type="text"
-        placeholder="Enter your first name"
+        placeholder="Enter Email"
         inputValue={signupFormData.email}
         onChange={handleChange}
         isRequired
@@ -91,7 +118,7 @@ const SignUpForm: React.FC = () => {
         label="Mobile Number"
         name="mobile"
         type="text"
-        placeholder="Enter your first name"
+        placeholder="Enter Mobile"
         inputValue={signupFormData.mobile}
         onChange={handleChange}
         isRequired
@@ -102,7 +129,7 @@ const SignUpForm: React.FC = () => {
         label="Password"
         name="password"
         type="password"
-        placeholder="Enter your first name"
+        placeholder="Enter Password"
         inputValue={signupFormData.password}
         onChange={handleChange}
         isRequired
@@ -113,8 +140,8 @@ const SignUpForm: React.FC = () => {
         label="Confirm Password"
         name="confirmPassword"
         type="password"
-        placeholder="Enter your first name"
-        inputValue={signupFormData.confirmPassword}
+        placeholder="Re-Confirm Password"
+        inputValue={signupFormData?.confirmPassword ?? ""}
         onChange={handleChange}
         isRequired
         error={error.confirmPasswordError}

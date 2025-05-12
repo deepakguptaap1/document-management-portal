@@ -57,12 +57,14 @@ const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <>
-                <CustomLink
-                  href="/user"
-                  className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
-                  text={"Users"}
-                />
+                {isAdmin && (
+                  <CustomLink
+                    href="/user"
+                    className={styles.link}
+                    onClick={() => setIsMenuOpen(false)}
+                    text={"User Management"}
+                  />
+                )}
                 <CustomLink
                   href="/documents"
                   className={styles.link}
@@ -81,14 +83,6 @@ const Header: React.FC<HeaderProps> = ({
                   onClick={() => setIsMenuOpen(false)}
                   text="Q&A"
                 />
-                {isAdmin && (
-                  <CustomLink
-                    href="user"
-                    className={styles.link}
-                    onClick={() => setIsMenuOpen(false)}
-                    text={"User Management"}
-                  />
-                )}
                 <CustomButton
                   className={clsx(styles.link, styles.logout)}
                   onClick={handleLogOut}

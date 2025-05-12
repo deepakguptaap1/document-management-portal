@@ -1,31 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./userManagement.module.scss";
 import { User } from "@/interfaces/elements/elements";
 import CustomButton from "@/components/atom/customButton/cutomButton";
 import CustomDropdown from "@/components/atom/dropdown/customDropdown";
-
-const initialUsers: User[] = [
-  { id: "1", name: "Alice Smith", email: "alice@example.com", role: "User" },
-  { id: "2", name: "Bob Johnson", email: "bob@example.com", role: "Admin" },
-  {
-    id: "3",
-    name: "Charlie Brown",
-    email: "charlie@example.com",
-    role: "Manager",
-  },
-];
+import { useAppContext } from "@/store/store";
 
 const UserManagement: React.FC = () => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const { getStore, updateStore } = useAppContext();
+  const { usersData } = getStore();
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("/api/users");
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message);
+        updateStore({ usersData: result.data });
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    };
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleRoleChange = (id: string, newRole: User["role"]) => {
-    setUsers((prev) =>
-      prev.map((user) => (user.id === id ? { ...user, role: newRole } : user))
-    );
+  const handleRoleChange = async (id: string, newRole: User["role"]) => {
+    try {
+      const res = await fetch("/api/users", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, newRole }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message);
+      updateStore({ usersData: result.data });
+    } catch (err) {
+      console.error("Update failed", err);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setUsers((prev) => prev.filter((user) => user.id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch("/api/users", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message);
+      updateStore({ usersData: result.data });
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
   };
 
   return (
@@ -39,9 +68,9 @@ const UserManagement: React.FC = () => {
           <div>Actions</div>
         </div>
         <div className={styles.tableBody}>
-          {users.map(({ id, name, email, role }) => (
+          {usersData?.map(({ id, fullName, email, role }) => (
             <div key={id} className={styles.tableContent}>
-              <div>{name}</div>
+              <div>{fullName}</div>
               <div>{email}</div>
               <div>{role}</div>
               <div className={styles.actions}>
@@ -65,12 +94,12 @@ const UserManagement: React.FC = () => {
         </div>
       </div>
       <div className={styles.mobileView}>
-        {users.map((user) => (
+        {usersData?.map((user) => (
           <div className={styles.userDetails} key={user.id}>
             <div className={styles.item}>
               <div>Name</div>
               <div>:</div>
-              <div>{user.name}</div>
+              <div>{user.fullName}</div>
             </div>
             <div className={styles.item}>
               <div>Email</div>

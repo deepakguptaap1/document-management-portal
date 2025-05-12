@@ -4,8 +4,10 @@ import CustomInput from "@/components/atom/customInput/customInput";
 import CustomButton from "@/components/atom/customButton/cutomButton";
 import { LoginFormDataProps } from "@/interfaces/elements/elements";
 import { useAppContext } from "@/store/store";
+import { useRouter } from "next/router";
 
 const LoginForm: React.FC = () => {
+  const router = useRouter();
   const { updateStore } = useAppContext();
   const [loginFormData, setLoginFormData] = useState<LoginFormDataProps>({
     email: "",
@@ -22,7 +24,7 @@ const LoginForm: React.FC = () => {
     setError((prev) => ({ ...prev, [`${e.target.name}Error`]: "" }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!loginFormData.email || !loginFormData.password) {
       const err = { ...error };
       if (!loginFormData.email) err.emailError = "Email is required";
@@ -30,9 +32,25 @@ const LoginForm: React.FC = () => {
       setError(err);
       return;
     }
-    updateStore({ loginData: loginFormData });
-    console.log("Submitted:", loginFormData);
-    // TODO: Connect to auth API
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginFormData),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.message);
+      updateStore({
+        loginData: loginFormData,
+        currentUser: result.data,
+        isAuthenticated: true,
+        role: result.data.role,
+      });
+      //session management and Implement  authentication feature
+      router.push("/documents");
+    } catch (err) {
+      console.error("Login failed", err);
+    }
   };
 
   return (
