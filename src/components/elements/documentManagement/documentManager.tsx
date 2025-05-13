@@ -5,31 +5,38 @@ import CustomButton from "@/components/atom/customButton/cutomButton";
 import DocumentUploader from "@/components/molecules/documentUploader/documentUploader";
 import { UploadedDocument } from "@/interfaces/moelcules/molecules";
 import { useAppContext } from "@/store/store";
+import { useRouter } from "next/router";
 
 const DocumentManager = () => {
+  const router = useRouter();
   const { getStore, updateStore } = useAppContext();
   const { currentUser } = getStore();
-  const documents = currentUser?.files ?? [];
-  const [selectedDoc, setSelectedDoc] = useState<UploadedDocument | null>(null);
+  const documents = (currentUser?.files ?? []) as UploadedDocument[];
   const [isUpload, setIsUpload] = useState<boolean>(false);
+  const [docViewer, setDocViewer] = useState<{
+    isOpen: boolean;
+    doc: UploadedDocument | null;
+  }>({
+    isOpen: false,
+    doc: null,
+  });
 
   useEffect(() => {
     const fetchDocumnets = async () => {
-      console.log(`/api/documents?id=${currentUser.id}`);
       try {
-        const res = await fetch(
-          `/api/documents?id=${encodeURIComponent(currentUser.id)}`
-        );
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message);
-        updateStore({ currentUser: result.data });
+        console.log("Below Commented code Will implement it later");
+        // const res = await fetch(`/api/documents?id=${currentUser.id}`);
+        // const result = await res.json();
+        // if (!res.ok) throw new Error(result.message);
+        // updateStore({ currentUser: result.data });
       } catch (err) {
         console.error("Document fetch failed", err);
       }
     };
-    if (!currentUser?.files?.length) fetchDocumnets();
+    if (!currentUser?.files?.length && router.isReady && currentUser?.id)
+      fetchDocumnets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentUser?.id]);
 
   const handleUpload = async (files: File[]) => {
     const newDocs: UploadedDocument[] = files.map((file) => ({
@@ -41,18 +48,40 @@ const DocumentManager = () => {
     }));
 
     try {
-      const res = await fetch("/api/documents", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: currentUser.id,
-          files: [...documents, ...newDocs],
-        }),
-      });
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.message);
+      console.log("Below Commented code Will implement it later");
+      // const res = await fetch("/api/documents", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     id: currentUser.id,
+      //     files: [...documents, ...newDocs],
+      //   }),
+      // });
+
+      // const formData = new FormData();
+      // formData.append("id", currentUser.id);
+
+      // newDocs.forEach((doc) => {
+      //   formData.append("files", doc.file);
+      // });
+
+      // const res = await fetch("/api/documents", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     id: currentUser.id,
+      //     files: [...documents, ...newDocs],
+      //   }),
+      // });
+
+      // const result = await res.json();
+      // if (!res.ok) throw new Error(result.message);
+      // updateStore({
+      //   currentUser: result.data,
+      // });
+
       updateStore({
-        currentUser: result.data,
+        currentUser: { ...currentUser, files: [...documents, ...newDocs] },
       });
       handleUploadDialog();
     } catch (err) {
@@ -61,20 +90,25 @@ const DocumentManager = () => {
   };
 
   const removeDocument = async (index: number) => {
-    const files = documents.filter((_, i) => i !== index);
     try {
-      const res = await fetch("/api/documents", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: currentUser.id,
-          files: files,
-        }),
-      });
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.message);
+      const updatedFiles = documents.filter((_, i) => i !== index);
+      console.log("Below Commented code Will implement it later");
+      // const res = await fetch("/api/documents", {
+      //   method: "PUT",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     id: currentUser.id,
+      //     files: files,
+      //   }),
+      // });
+      // const result = await res.json();
+      // if (!res.ok) throw new Error(result.message);
+      // updateStore({
+      //   currentUser: result.data,
+      // });
+
       updateStore({
-        currentUser: result.data,
+        currentUser: { ...currentUser, files: updatedFiles },
       });
     } catch (err) {
       console.error("Document Delete failed", err);
@@ -82,16 +116,28 @@ const DocumentManager = () => {
   };
 
   const downloadDocument = (doc: UploadedDocument) => {
-    const url = URL.createObjectURL(doc.file);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = doc.name;
-    a.click();
-    URL.revokeObjectURL(url);
+    if (doc.file instanceof Blob) {
+      const url = URL.createObjectURL(doc.file);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = doc.name;
+      a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      alert("Invalid Documnet or File");
+    }
   };
 
   const handleUploadDialog = () => {
     setIsUpload((prev) => !prev);
+  };
+
+  const handleCloseDocViewer = () => {
+    setDocViewer((prev) => ({ ...prev, isOpen: !prev.isOpen, doc: null }));
+  };
+
+  const hanldeDocView = (document: UploadedDocument) => {
+    setDocViewer((prev) => ({ ...prev, isOpen: !prev.isOpen, doc: document }));
   };
 
   return (
@@ -124,7 +170,7 @@ const DocumentManager = () => {
                   <div className={styles.actions}>
                     <CustomButton
                       className={styles.button}
-                      onClick={() => setSelectedDoc(doc)}
+                      onClick={() => hanldeDocView(doc)}
                       variant="primary-medium"
                     >
                       View
@@ -150,10 +196,10 @@ const DocumentManager = () => {
           </>
         )}
       </div>
-      {selectedDoc && (
+      {docViewer.isOpen && docViewer.doc && (
         <DocumentViewer
-          document={selectedDoc}
-          onClose={() => setSelectedDoc(null)}
+          document={docViewer.doc}
+          onClose={handleCloseDocViewer}
         />
       )}
       {isUpload && (

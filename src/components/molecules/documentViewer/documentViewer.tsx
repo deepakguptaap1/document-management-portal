@@ -9,7 +9,15 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
   document,
   onClose,
 }) => {
-  const fileUrl = URL.createObjectURL(document.file);
+  let fileUrl = "";
+  if (document.file instanceof Blob) {
+    fileUrl = URL?.createObjectURL(document.file);
+  } else {
+    alert("Invalid Documnet or File");
+    onClose();
+    return null;
+  }
+
   return (
     <CustomDialog open={true} onClose={onClose} title={document.name}>
       {document.type.includes("image") ? (

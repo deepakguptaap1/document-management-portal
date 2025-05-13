@@ -18,6 +18,10 @@ const Header: React.FC<HeaderProps> = ({
     setIsMenuOpen(false);
   };
 
+  const handleCloseMenu = () => {
+    if (isMenuOpen) setIsMenuOpen(false);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -40,18 +44,24 @@ const Header: React.FC<HeaderProps> = ({
               [styles.open]: isMenuOpen,
             })}
           >
+            <CustomLink
+              href="/"
+              className={styles.link}
+              text="Home"
+              onClick={handleCloseMenu}
+            />
             {!isAuthenticated ? (
               <>
                 <CustomLink
                   href="/register"
                   className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   text={"Sign Up"}
                 />
                 <CustomLink
                   href="/login"
                   className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   text={"Login"}
                 />
               </>
@@ -61,26 +71,26 @@ const Header: React.FC<HeaderProps> = ({
                   <CustomLink
                     href="/user"
                     className={styles.link}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={handleCloseMenu}
                     text={"User Management"}
                   />
                 )}
                 <CustomLink
                   href="/documents"
                   className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   text={"Documents"}
                 />
                 <CustomLink
                   href="/ingestion"
                   className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   text="Ingestion"
                 />
                 <CustomLink
                   href="/qa"
                   className={styles.link}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleCloseMenu}
                   text="Q&A"
                 />
                 <CustomButton
