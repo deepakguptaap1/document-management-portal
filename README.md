@@ -14,7 +14,9 @@ This portal allows users to manage, view, and update documents through a scalabl
 * **Signup**: Users can register by providing full name, email, mobile number, password, and confirm password.
 * **Login**: Users can log in using email and password.
 * **Logout**: Can be implemented by clearing session data and redirecting (not yet implemented).
-
+- localStorage will be used to persist the user’s login state (e.g., token or session identifier).
+- Auth guards Auth guards are designed to check for a valid login state before allowing access to restricted parts of the application. If the user is not authenticated (i.e., no auth data in localStorage), they will be redirected to the login page.
+- Although token-based logic is not yet implemented, the structure is being prepared for secure authentication and session management.
 ---
 
 #### 👤 User Capabilities
@@ -145,9 +147,43 @@ npm run dev
 - Uses `@use` instead of deprecated `@import` in Sass
 
 ---
+## Authentication Overview
+
+### Current State
+
+Authentication in this application is currently in a **setup phase**.
+
+- localStorage is planned to be used for storing user session data (e.g., token).
+- Protected routes will use **auth guard logic** to restrict access.
+
+### Planned Workflow
+
+1. After login, the server will return a token.
+2. The token will be saved in `localStorage`.
+3. Auth guards will check for the token before rendering protected components/pages.
+
+### Auth Guard Logic (Planned)
+
+The app will implement a check like this:
+
+```ts
+// Pseudocode
+const token = localStorage.getItem('authToken');
+
+if (!token) {
+  router.push('/login');
+}
 
 ## ⚙️ Notes
 
 - Mobile and desktop responsive layouts supported
 - No server-side rendering (CSR-only by design)
+
+## ⚙️ Application Access
+    • Code Sand Box URL (Live) : https://6l97xh-3000.csb.app/
+    • Github Link : https://github.com/deepakguptaap1/document-management-portal/
+    • Credential to Access Admin Dashboard
+        Email : admin@dmp.com
+        Password : admin@12345
+
 ```
