@@ -17,3 +17,7 @@ export interface User {
   email: string;
   role: "Admin" | "User" | "Manager";
 }
+
+export interface FeaturePlaceholderProps {
+  featureName: string;
+}

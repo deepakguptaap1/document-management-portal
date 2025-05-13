@@ -5,6 +5,7 @@ import CustomInput from "@/components/atom/customInput/customInput";
 import { SignUpFormDataProps } from "@/interfaces/elements/elements";
 import { useAppContext } from "@/store/store";
 import { useRouter } from "next/router";
+import { setCurrentUser } from "@/utils/helper";
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -74,6 +75,7 @@ const SignUpForm: React.FC = () => {
         isAuthenticated: true,
         currentUser: result.data,
       });
+      setCurrentUser(result.data);
       setSignupFormData({
         fullName: "",
         email: "",

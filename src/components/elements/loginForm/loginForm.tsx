@@ -5,6 +5,7 @@ import CustomButton from "@/components/atom/customButton/cutomButton";
 import { LoginFormDataProps } from "@/interfaces/elements/elements";
 import { useAppContext } from "@/store/store";
 import { useRouter } from "next/router";
+import { setCurrentUser } from "@/utils/helper";
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -46,6 +47,7 @@ const LoginForm: React.FC = () => {
         isAuthenticated: true,
         role: result.data.role,
       });
+      setCurrentUser(result.data);
       //session management and Implement  authentication feature
       router.push("/documents");
     } catch (err) {
